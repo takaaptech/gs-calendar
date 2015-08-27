@@ -8,8 +8,8 @@ android {
         applicationId "com.pukulab.puku0x.gscalendar"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.0.3"
     }
     buildTypes {
         release {
