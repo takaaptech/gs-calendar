@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
             else {
-                Toast.makeText(getApplicationContext(), com.pukulab.puku0x.gscalendar.R.string.login_error, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_LONG).show();
             }
 
             if (exception != null) {
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.pukulab.puku0x.gscalendar.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         //new GetPluginTask(MainActivity.this).execute("");
         try {
             //戻るボタンの追加
@@ -117,13 +117,13 @@ public class MainActivity extends AppCompatActivity {
             boolean auto_login = sp.getBoolean(SettingsActivity.PREFERENCE_AUTO_LOGIN, false);
 
             // プログレスバー
-            progress = (ProgressBar) findViewById(com.pukulab.puku0x.gscalendar.R.id.progressBar);
+            progress = (ProgressBar) findViewById(R.id.progressBar);
 
             // テキストボックスたち
-            mUserIdEditText = (EditText)findViewById(com.pukulab.puku0x.gscalendar.R.id.et_login_id);
-            mPasswordEditText = (EditText)findViewById(com.pukulab.puku0x.gscalendar.R.id.et_password);
-            mServerUrlEditText = (EditText)findViewById(com.pukulab.puku0x.gscalendar.R.id.et_server_url);
-            mAutoLoginCheckBox = (CheckBox)findViewById(com.pukulab.puku0x.gscalendar.R.id.checkBox);
+            mUserIdEditText = (EditText)findViewById(R.id.et_login_id);
+            mPasswordEditText = (EditText)findViewById(R.id.et_password);
+            mServerUrlEditText = (EditText)findViewById(R.id.et_server_url);
+            mAutoLoginCheckBox = (CheckBox)findViewById(R.id.checkBox);
 
             // 設定値があれば読み込む
             mUserIdEditText.setText(user_id);
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             mAutoLoginCheckBox.setChecked(auto_login);
 
             // ログインボタン
-            Button btn_login = (Button) findViewById(com.pukulab.puku0x.gscalendar.R.id.btn_login);
+            Button btn_login = (Button) findViewById(R.id.btn_login);
             btn_login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(com.pukulab.puku0x.gscalendar.R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == com.pukulab.puku0x.gscalendar.R.id.action_settings) {
+        if (id == R.id.action_settings) {
             Intent intent = SettingsActivity.createIntent(getApplicationContext());
             startActivity(intent);
             return true;

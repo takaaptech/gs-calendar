@@ -124,7 +124,7 @@ public class UserListActivity extends AppCompatActivity {
 
                         // 最後に選択したグループIDを保存
                         SharedPreferences.Editor editor = sp.edit();
-                        editor.putString(SettingsActivity.PREFERENCE_DEFAULT_FACILITY_GROUP_ID, group.id);
+                        editor.putString(SettingsActivity.PREFERENCE_DEFAULT_USER_GROUP_ID, group.id);
                         editor.apply();
 
                         // ユーザの一覧を取得

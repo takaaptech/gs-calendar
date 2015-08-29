@@ -91,11 +91,11 @@
                 android:textColor="@android:color/darker_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="6dp" />
             <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="10dp">
                 <Button android:id="@+id/btn_start_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                 android:textColor="@android:color/darker_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp" />
+                android:layout_marginBottom="6dp" />
             <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -129,6 +129,16 @@
                     android:layout_height="wrap_content"
                     android:text="HH:mm"
                     android:layout_toRightOf="@id/btn_end_date"/>
+            </RelativeLayout>
+            <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="12dp">
+                <CheckBox android:id="@+id/checkbox_allday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="終日" />
             </RelativeLayout>
 
             <ImageView

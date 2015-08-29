@@ -143,8 +143,8 @@ public class DetailActivity extends AppCompatActivity {
 
             if (data != null) {
                 LayoutInflater inflater = (LayoutInflater) DetailActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout = inflater.inflate(com.pukulab.puku0x.gscalendar.R.layout.dialog_same_schedule_user, (ViewGroup) findViewById(com.pukulab.puku0x.gscalendar.R.id.alertdialog_layout));
-                mDialogProgressBar = (ProgressBar)layout.findViewById(com.pukulab.puku0x.gscalendar.R.id.pb_same_schedule_users);
+                final View layout = inflater.inflate(R.layout.dialog_same_schedule_user, (ViewGroup) findViewById(R.id.alertdialog_layout));
+                mDialogProgressBar = (ProgressBar)layout.findViewById(R.id.pb_same_schedule_users);
 
                 // アダプタ設定
                 ArrayAdapter<GroupData> groupListAdapter = new ArrayAdapter<>(DetailActivity.this, android.R.layout.simple_spinner_item);
@@ -155,7 +155,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 // ユーザ一覧表示用のアダプタ
                 final ArrayAdapter<UserData> userDataAdapter = new ArrayAdapter<>(DetailActivity.this, android.R.layout.simple_list_item_multiple_choice);
-                final ListView lv_same_schedule_users = (ListView)layout.findViewById(com.pukulab.puku0x.gscalendar.R.id.lv_same_schedule_users);
+                final ListView lv_same_schedule_users = (ListView)layout.findViewById(R.id.lv_same_schedule_users);
                 lv_same_schedule_users.setAdapter(userDataAdapter);
                 lv_same_schedule_users.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -184,7 +184,7 @@ public class DetailActivity extends AppCompatActivity {
                 }
 
                 // スピナーにアダプタを設定
-                Spinner spinner = (Spinner) layout.findViewById(com.pukulab.puku0x.gscalendar.R.id.spinner_group);
+                Spinner spinner = (Spinner) layout.findViewById(R.id.spinner_group);
                 spinner.setAdapter(groupListAdapter);
 
                 // 最後に選択したグループに切り替え
@@ -259,11 +259,11 @@ public class DetailActivity extends AppCompatActivity {
 
                 // ユーザ選択ダイアログ
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-                builder.setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_select_user));
+                builder.setTitle(getString(R.string.dialog_title_select_user));
                 builder.setView(layout);
-                builder.setPositiveButton(getString(com.pukulab.puku0x.gscalendar.R.string.ok), new AlertDialog.OnClickListener() {
+                builder.setPositiveButton(getString(R.string.ok), new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        TextView tv_same_schedule_users = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_detail_same_schedule_users);
+                        TextView tv_same_schedule_users = (TextView) findViewById(R.id.tv_detail_same_schedule_users);
 
                         // データ入れ替え
                         mSchedule.sameScheduleUsers = new ArrayList<>(mSameScheduleUserList);
@@ -282,7 +282,7 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     }
                 });
-                builder.setNegativeButton(getString(com.pukulab.puku0x.gscalendar.R.string.cancel), new AlertDialog.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.cancel), new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // 何もしない
                     }
@@ -317,8 +317,8 @@ public class DetailActivity extends AppCompatActivity {
 
             if (data != null) {
                 LayoutInflater inflater = (LayoutInflater) DetailActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout = inflater.inflate(com.pukulab.puku0x.gscalendar.R.layout.dialog_facility_reservation, (ViewGroup) findViewById(com.pukulab.puku0x.gscalendar.R.id.dialog_facility_reservation));
-                mDialogProgressBar = (ProgressBar)layout.findViewById(com.pukulab.puku0x.gscalendar.R.id.pb_facility_reservation);
+                final View layout = inflater.inflate(R.layout.dialog_facility_reservation, (ViewGroup) findViewById(R.id.dialog_facility_reservation));
+                mDialogProgressBar = (ProgressBar)layout.findViewById(R.id.pb_facility_reservation);
 
                 // アダプタ設定
                 ArrayAdapter<FacilityGroupData> groupListAdapter = new ArrayAdapter<>(DetailActivity.this, android.R.layout.simple_spinner_item);
@@ -329,7 +329,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 // 施設覧表示用のアダプタ
                 final ArrayAdapter<FacilityData> facilityDataAdapter = new ArrayAdapter<>(DetailActivity.this, android.R.layout.simple_list_item_multiple_choice);
-                final ListView lv_facilities = (ListView)layout.findViewById(com.pukulab.puku0x.gscalendar.R.id.lv_facility_reservation);
+                final ListView lv_facilities = (ListView)layout.findViewById(R.id.lv_facility_reservation);
                 lv_facilities.setAdapter(facilityDataAdapter);
                 lv_facilities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -358,7 +358,7 @@ public class DetailActivity extends AppCompatActivity {
                 }
 
                 // スピナーにアダプタを設定
-                Spinner spinner = (Spinner) layout.findViewById(com.pukulab.puku0x.gscalendar.R.id.spinner_group);
+                Spinner spinner = (Spinner) layout.findViewById(R.id.spinner_group);
                 spinner.setAdapter(groupListAdapter);
 
                 // 最後に選択したグループに切り替え
@@ -431,9 +431,9 @@ public class DetailActivity extends AppCompatActivity {
 
                 // 施設選択ダイアログ
                 AlertDialog.Builder builder = new AlertDialog.Builder(DetailActivity.this);
-                builder.setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_select_facility));
+                builder.setTitle(getString(R.string.dialog_title_select_facility));
                 builder.setView(layout);
-                builder.setPositiveButton(getString(com.pukulab.puku0x.gscalendar.R.string.ok), new AlertDialog.OnClickListener() {
+                builder.setPositiveButton(getString(R.string.ok), new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // データ入れ替え
                         mSchedule.reservedFacilities = new ArrayList<>(mReservedFacilityList);
@@ -453,7 +453,7 @@ public class DetailActivity extends AppCompatActivity {
                         }
                     }
                 });
-                builder.setNegativeButton(getString(com.pukulab.puku0x.gscalendar.R.string.cancel), new AlertDialog.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.cancel), new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // 何もしない
                     }
@@ -485,7 +485,7 @@ public class DetailActivity extends AppCompatActivity {
             mProgressBar.setVisibility(View.GONE);
 
             if (result == null) {
-                Toast.makeText(DetailActivity.this, getString(com.pukulab.puku0x.gscalendar.R.string.connection_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
             }
             else if (result.id.equals("-1")) {
                 Toast.makeText(DetailActivity.this, result.detail, Toast.LENGTH_SHORT).show();
@@ -514,9 +514,9 @@ public class DetailActivity extends AppCompatActivity {
 
                     // テキストボックス付きのダイアログを生成
                     new AlertDialog.Builder(DetailActivity.this)
-                            .setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_input_title))
+                            .setTitle(getString(R.string.dialog_title_input_title))
                             .setView(editView)
-                            .setPositiveButton(getString(com.pukulab.puku0x.gscalendar.R.string.ok), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     // 詳細画面に反映
                                     mSchedule.title = editView.getText().toString();
@@ -528,7 +528,7 @@ public class DetailActivity extends AppCompatActivity {
                                     }
                                 }
                             })
-                            .setNegativeButton(getString(com.pukulab.puku0x.gscalendar.R.string.cancel), new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                 }
                             })
@@ -549,7 +549,7 @@ public class DetailActivity extends AppCompatActivity {
         final String [] categories =(String[])category_list.toArray(new String[0]);
         mCategoryTextView.setText(categories[mSchedule.color]);
         mCategoryImageView.setBackgroundColor(GroupSessionApi.title_colors[mSchedule.color]);
-        RelativeLayout layoutCategory = (RelativeLayout)findViewById(com.pukulab.puku0x.gscalendar.R.id.rl_category);
+        RelativeLayout layoutCategory = (RelativeLayout)findViewById(R.id.rl_category);
         if (editable) {
             layoutCategory.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -559,14 +559,14 @@ public class DetailActivity extends AppCompatActivity {
 
                     // ラジオボタン付きのダイアログを生成
                     new AlertDialog.Builder(DetailActivity.this)
-                            .setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_select_category))
+                            .setTitle(getString(R.string.dialog_title_select_category))
                             .setSingleChoiceItems(categories, mCategoryIndex,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             mCategoryIndex = which;
                                         }
                                     })
-                            .setPositiveButton(getString(com.pukulab.puku0x.gscalendar.R.string.ok), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     mSchedule.color = mCategoryIndex;
                                     mCategoryTextView.setText(categories[mCategoryIndex]);
@@ -578,7 +578,7 @@ public class DetailActivity extends AppCompatActivity {
                                     }
                                 }
                             })
-                            .setNegativeButton(getString(com.pukulab.puku0x.gscalendar.R.string.cancel), new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                 }
                             })
@@ -623,12 +623,12 @@ public class DetailActivity extends AppCompatActivity {
                                 mSchedule.end = cal.getTime();
 
                                 // 日付表示の更新
-                                mEndDateTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day_week), mSchedule.end));
+                                mEndDateTextView.setText(DateFormat.format(getString(R.string.date_year_month_day_week), mSchedule.end));
 
                                 // 時間設定エラーのチェック(終了時間よりも後だった場合)
                                 if (startDate.equals(mSchedule.end) || startDate.after(mSchedule.end)) {
                                     mSchedule.end = mSchedule.start;
-                                    mEndTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.end));
+                                    mEndTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.end));
                                 }
 
                                 // 読み直し
@@ -638,7 +638,7 @@ public class DetailActivity extends AppCompatActivity {
 
                             // ボタンのキャプションに反映
                             mSchedule.start = cal.getTime();
-                            mStartDateTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day_week), mSchedule.start));
+                            mStartDateTextView.setText(DateFormat.format(getString(R.string.date_year_month_day_week), mSchedule.start));
 
                             // 変更があれば保存ボタンを表示
                             if (!mSchedule.start.equals(mLastSchedule.start)) {
@@ -646,7 +646,7 @@ public class DetailActivity extends AppCompatActivity {
                             }
                         }
                     }, year, monthOfYear, dayOfMonth);
-                    mStartDatePickerDialog.setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_select_date));
+                    mStartDatePickerDialog.setTitle(getString(R.string.dialog_title_select_date));
                     mStartDatePickerDialog.show();
                 }
             });
@@ -672,7 +672,7 @@ public class DetailActivity extends AppCompatActivity {
                             // 5分間隔かチェック
                             int remainder = minute % 5;
                             if (remainder != 0) {
-                                Toast.makeText(getApplicationContext(), getString(com.pukulab.puku0x.gscalendar.R.string.edit_error_interval_five_minutes), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.edit_error_interval_five_minutes), Toast.LENGTH_SHORT).show();
                                 minute = ((minute - remainder) + 5 * Math.round(remainder / 5.0f));
                                 if (minute >= 55) minute = 55;
                             }
@@ -687,13 +687,13 @@ public class DetailActivity extends AppCompatActivity {
                             cal.set(Calendar.HOUR_OF_DAY, hourOfDay);  // 時
                             mSchedule.start = cal.getTime();
                             System.out.println("start:" + mSchedule.start);
-                            mStartTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.start));
+                            mStartTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.start));
                             mStartTimeTextView.setTextColor(Color.BLACK);
 
                             // 時間設定エラーのチェック(終了時間よりも後だった場合)
                             if (mSchedule.start.equals(mSchedule.end) || mSchedule.start.after(mSchedule.end)) {
                                 mSchedule.end = mSchedule.start;
-                                mEndTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.end));
+                                mEndTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.end));
                                 mEndTimeTextView.setTextColor(Color.RED);
                             } else {
                                 mStartTimeTextView.setTextColor(Color.BLACK);
@@ -706,7 +706,7 @@ public class DetailActivity extends AppCompatActivity {
                             }
                         }
                     }, hour, minute, true);
-                    mStartTimePickerDialog.setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_select_time));
+                    mStartTimePickerDialog.setTitle(getString(R.string.dialog_title_select_time));
                     mStartTimePickerDialog.show();
                 }
             });
@@ -747,12 +747,12 @@ public class DetailActivity extends AppCompatActivity {
                                 mSchedule.start = cal.getTime();
 
                                 // 日付表示の更新
-                                mStartDateTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day_week), mSchedule.start));
+                                mStartDateTextView.setText(DateFormat.format(getString(R.string.date_year_month_day_week), mSchedule.start));
 
                                 // 時間設定エラーのチェック(開始時間よりも前だった場合)
                                 if (endDate.equals(mSchedule.start) || endDate.before(mSchedule.start)) {
                                     mSchedule.start = mSchedule.end;
-                                    mStartTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.start));
+                                    mStartTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.start));
                                 }
 
                                 // 読み直し
@@ -762,7 +762,7 @@ public class DetailActivity extends AppCompatActivity {
 
                             // ボタンのキャプションに反映
                             mSchedule.end = cal.getTime();
-                            mEndDateTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day_week), mSchedule.end));
+                            mEndDateTextView.setText(DateFormat.format(getString(R.string.date_year_month_day_week), mSchedule.end));
 
                             // 変更があれば保存ボタンを表示
                             if (!mSchedule.end.equals(mLastSchedule.end)) {
@@ -770,7 +770,7 @@ public class DetailActivity extends AppCompatActivity {
                             }
                         }
                     }, year, monthOfYear, dayOfMonth);
-                    mEndDatePickerDialog.setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_select_date));
+                    mEndDatePickerDialog.setTitle(getString(R.string.dialog_title_select_date));
                     mEndDatePickerDialog.show();
                 }
             });
@@ -795,7 +795,7 @@ public class DetailActivity extends AppCompatActivity {
                             // 5分間隔かチェック
                             int remainder = minute % 5;
                             if (remainder != 0) {
-                                Toast.makeText(getApplicationContext(), getString(com.pukulab.puku0x.gscalendar.R.string.edit_error_interval_five_minutes), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.edit_error_interval_five_minutes), Toast.LENGTH_SHORT).show();
                                 minute = ((minute - remainder) + 5 * Math.round(remainder / 5.0f));
                                 if (minute >= 55) minute = 55;
                             }
@@ -807,13 +807,13 @@ public class DetailActivity extends AppCompatActivity {
                             cal.set(Calendar.HOUR_OF_DAY, hourOfDay);  // 時
                             cal.set(Calendar.MINUTE, minute);           // 分
                             mSchedule.end = cal.getTime();
-                            mEndTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.end));
+                            mEndTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.end));
                             mEndTimeTextView.setTextColor(Color.BLACK);
 
                             // 時間設定エラーのチェック(開始時間よりも前だった場合)
                             if (mSchedule.end.equals(mSchedule.start) || mSchedule.end.before(mSchedule.start)) {
                                 mSchedule.start = mSchedule.end;
-                                mStartTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.start));
+                                mStartTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.start));
                                 mStartTimeTextView.setTextColor(Color.RED);
                             } else {
                                 mStartTimeTextView.setTextColor(Color.BLACK);
@@ -826,17 +826,17 @@ public class DetailActivity extends AppCompatActivity {
                             }
                         }
                     }, hour, minute, true);
-                    mEndTimePickerDialog.setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_select_time));
+                    mEndTimePickerDialog.setTitle(getString(R.string.dialog_title_select_time));
                     mEndTimePickerDialog.show();
                 }
             });
         }
 
         // 日付をボタンのテキストに反映
-        mStartDateTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day_week), mSchedule.start));
-        mStartTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.start));
-        mEndDateTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day_week), mSchedule.end));
-        mEndTimeTextView.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), mSchedule.end));
+        mStartDateTextView.setText(DateFormat.format(getString(R.string.date_year_month_day_week), mSchedule.start));
+        mStartTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.start));
+        mEndDateTextView.setText(DateFormat.format(getString(R.string.date_year_month_day_week), mSchedule.end));
+        mEndTimeTextView.setText(DateFormat.format(getString(R.string.date_hour_minute), mSchedule.end));
 
         // 同じスケジュールが登録されたユーザ (ユーザ1, ユーザ2,ユーザ3, ...)
         String users = "";
@@ -879,9 +879,9 @@ public class DetailActivity extends AppCompatActivity {
                     editView.setText(mSchedule.detail);
                     editView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                     new AlertDialog.Builder(DetailActivity.this)
-                            .setTitle(getString(com.pukulab.puku0x.gscalendar.R.string.dialog_title_input_detail))
+                            .setTitle(getString(R.string.dialog_title_input_detail))
                             .setView(editView)
-                            .setPositiveButton(getString(com.pukulab.puku0x.gscalendar.R.string.ok), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     mSchedule.detail = editView.getText().toString();
                                     mDetailTextView.setText(mSchedule.detail);
@@ -892,7 +892,7 @@ public class DetailActivity extends AppCompatActivity {
                                     }
                                 }
                             })
-                            .setNegativeButton(getString(com.pukulab.puku0x.gscalendar.R.string.cancel), new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                 }
                             })
@@ -905,7 +905,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.pukulab.puku0x.gscalendar.R.layout.activity_detail);
+        setContentView(R.layout.activity_detail);
 
         // 引数取得
         Bundle extras = getIntent().getExtras();
@@ -934,25 +934,25 @@ public class DetailActivity extends AppCompatActivity {
             actionBar.setTitle(mDisplayedUser.name);
 
             if (mDisplayedUser.usid.equals(mLoginUser.usid)) {
-                actionBar.setSubtitle(com.pukulab.puku0x.gscalendar.R.string.title_activity_detail);
+                actionBar.setSubtitle(R.string.title_activity_detail);
             }
             else {
-                actionBar.setSubtitle(getString(com.pukulab.puku0x.gscalendar.R.string.title_activity_detail) + " （※ 編集不可）");
+                actionBar.setSubtitle(getString(R.string.title_activity_detail) + " （※ 編集不可）");
             }
         }
 
         // ビューの生成
-        mProgressBar = (ProgressBar) findViewById(com.pukulab.puku0x.gscalendar.R.id.pb_detail);
-        mTitleTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_detail_title);
-        mCategoryTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_category);
-        mCategoryImageView = (ImageView) findViewById(com.pukulab.puku0x.gscalendar.R.id.iv_category);
-        mStartDateTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_start_date);
-        mStartTimeTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_start_time);
-        mEndDateTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_end_date);
-        mEndTimeTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_end_time);
-        mSameScheduleUsersTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_detail_same_schedule_users);
-        mReservedFacilitiesTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_detail_reserved_facilities);
-        mDetailTextView = (TextView) findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_detail_detail);
+        mProgressBar = (ProgressBar) findViewById(R.id.pb_detail);
+        mTitleTextView = (TextView) findViewById(R.id.tv_detail_title);
+        mCategoryTextView = (TextView) findViewById(R.id.tv_category);
+        mCategoryImageView = (ImageView) findViewById(R.id.iv_category);
+        mStartDateTextView = (TextView) findViewById(R.id.tv_start_date);
+        mStartTimeTextView = (TextView) findViewById(R.id.tv_start_time);
+        mEndDateTextView = (TextView) findViewById(R.id.tv_end_date);
+        mEndTimeTextView = (TextView) findViewById(R.id.tv_end_time);
+        mSameScheduleUsersTextView = (TextView) findViewById(R.id.tv_detail_same_schedule_users);
+        mReservedFacilitiesTextView = (TextView) findViewById(R.id.tv_detail_reserved_facilities);
+        mDetailTextView = (TextView) findViewById(R.id.tv_detail_detail);
 
         // 表示 (表示ユーザとログインユーザが同じなら編集可能に)
         boolean editable = false;
@@ -965,16 +965,16 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(com.pukulab.puku0x.gscalendar.R.menu.menu_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
 
         // 保存ボタン
-        mSaveMenuItem = menu.findItem(com.pukulab.puku0x.gscalendar.R.id.menu_save);
+        mSaveMenuItem = menu.findItem(R.id.menu_save);
         mSaveMenuItem.setVisible(false);
 
         // 他のユーザのスケジュールを閲覧する際は編集不可に
         if (!mDisplayedUser.usid.equals(mLoginUser.usid)) {
             // 追加ボタンを非表示に
-            MenuItem itemEdit = menu.findItem(com.pukulab.puku0x.gscalendar.R.id.menu_edit);
+            MenuItem itemEdit = menu.findItem(R.id.menu_edit);
             itemEdit.setVisible(false);
 
             // 画面更新
@@ -1040,29 +1040,29 @@ public class DetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         // 設定
-        if (id == com.pukulab.puku0x.gscalendar.R.id.menu_edit) {
+        if (id == R.id.menu_edit) {
             Intent intent = EditActivity.createIntent(DetailActivity.this, mLoginUser, mSchedule);
             int requestCode = EditActivity.REQUEST_EDIT_SCHEDULE;
             startActivityForResult(intent, requestCode);
             return true;
         }
-        else if (id == com.pukulab.puku0x.gscalendar.R.id.menu_save) {
+        else if (id == R.id.menu_save) {
             // 開始と終了時刻が同じ
             if (mSchedule.start.equals(mSchedule.end)) {
-                Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_same_start_end, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, R.string.edit_error_same_start_end, Toast.LENGTH_SHORT).show();
                 mStartTimeTextView.setTextColor(Color.RED);
                 mEndTimeTextView.setTextColor(Color.RED);
             }
             else if (mSchedule.start.after(mSchedule.end)) {
-                Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_start_after_end, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, R.string.edit_error_start_after_end, Toast.LENGTH_SHORT).show();
             }
             else if (mSchedule.end.before(mSchedule.start)) {
-                Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_end_before_start, Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, R.string.edit_error_end_before_start, Toast.LENGTH_SHORT).show();
             }
             else {
                 // タイトルが空
                 if (mSchedule.title.isEmpty()) {
-                    Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_no_title, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, R.string.edit_error_no_title, Toast.LENGTH_SHORT).show();
                     mTitleTextView.setHintTextColor(Color.RED);
                 }
                 else {
@@ -1087,25 +1087,25 @@ public class DetailActivity extends AppCompatActivity {
             if (!mSchedule.equals(mLastSchedule)) {
                 // 保存確認ダイアログ表示
                 new AlertDialog.Builder(DetailActivity.this)
-                        .setTitle(com.pukulab.puku0x.gscalendar.R.string.ask_update)
-                        .setPositiveButton(getString(com.pukulab.puku0x.gscalendar.R.string.yes), new DialogInterface.OnClickListener() {
+                        .setTitle(R.string.ask_update)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // 開始と終了時刻が同じ
                                 if (mSchedule.start.equals(mSchedule.end)) {
-                                    Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_same_start_end, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailActivity.this, R.string.edit_error_same_start_end, Toast.LENGTH_SHORT).show();
                                     mStartTimeTextView.setTextColor(Color.RED);
                                     mEndTimeTextView.setTextColor(Color.RED);
                                 }
                                 else if (mSchedule.start.after(mSchedule.end)) {
-                                    Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_start_after_end, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailActivity.this, R.string.edit_error_start_after_end, Toast.LENGTH_SHORT).show();
                                 }
                                 else if (mSchedule.end.before(mSchedule.start)) {
-                                    Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_end_before_start, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DetailActivity.this, R.string.edit_error_end_before_start, Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     // タイトルが空
                                     if (mSchedule.title.isEmpty()) {
-                                        Toast.makeText(DetailActivity.this, com.pukulab.puku0x.gscalendar.R.string.edit_error_no_title, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(DetailActivity.this, R.string.edit_error_no_title, Toast.LENGTH_SHORT).show();
                                         mTitleTextView.setHintTextColor(Color.RED);
                                     }
                                     else {
@@ -1134,11 +1134,11 @@ public class DetailActivity extends AppCompatActivity {
                                 }
                             }
                         })
-                        .setNeutralButton(getString(com.pukulab.puku0x.gscalendar.R.string.cancel), new DialogInterface.OnClickListener() {
+                        .setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                             }
                         })
-                        .setNegativeButton(getString(com.pukulab.puku0x.gscalendar.R.string.no), new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // キャンセルを渡す
                                 Intent intent = new Intent();

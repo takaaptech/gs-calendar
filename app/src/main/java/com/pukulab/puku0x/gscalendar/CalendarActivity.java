@@ -134,6 +134,7 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
             if (mScheduleDataList != null) {
                for (ScheduleData d : mScheduleDataList) {
                     if (d.date.equals(date)) {
+                        //System.out.println("date = " + d.date);
                         List<Integer> colorList = new ArrayList<>();
                         for (Schedule s : d.scheduleList) {
                             int color = GroupSessionApi.title_colors[s.color];
@@ -523,13 +524,13 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
         // カレンダーの最初の表示位置を今月に合わせる
         mCalendarView.setViewPagerPosition(12);
 
-        // 日付を更新してスケジュール取得
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        mStartDate = cal.getTime();
-        cal.add(Calendar.MONTH, 1);
-        mEndDate = cal.getTime();
-        new DisplaySchedulesTask(CalendarActivity.this, mDisplayedUser, mDisplayedDate).execute(mStartDate, mEndDate);
+//        // 日付を更新してスケジュール取得
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//        mStartDate = cal.getTime();
+//        cal.add(Calendar.MONTH, 1);
+//        mEndDate = cal.getTime();
+//        new DisplaySchedulesTask(CalendarActivity.this, mDisplayedUser, mDisplayedDate).execute(mStartDate, mEndDate);
     }
 
     @Override
@@ -749,11 +750,11 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
             new DisplaySchedulesTask(CalendarActivity.this, mDisplayedUser, mDisplayedDate).execute(mStartDate, mEndDate);
             return true;
         }
-        else if (id == R.id.action_list) {
-            Intent intent = ScheduleActivity.createIntent(getApplicationContext(), mLoginUser, mDisplayedUser, mLastDisplayedDate);
-            startActivity(intent);
-            finish();
-        }
+//        else if (id == R.id.action_list) {
+//            Intent intent = ScheduleActivity.createIntent(getApplicationContext(), mLoginUser, mDisplayedUser, mLastDisplayedDate);
+//            startActivity(intent);
+//            finish();
+//        }
         // ユーザ一覧
         else if (id == R.id.action_users) {
             // 自分のスケジュールを見ているときはユーザ一覧画面に移動

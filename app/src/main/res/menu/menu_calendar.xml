@@ -16,8 +16,10 @@
         android:orderInCategory="300" app:showAsAction="never" />
 
     <!--表示変更ボタン-->
+    <!--
     <item android:id="@+id/action_list" android:title="@string/menu_schedule_list"
         android:orderInCategory="400" app:showAsAction="never" />
+    -->
 
     <!--設定ボタン-->
     <item android:id="@+id/action_settings" android:title="@string/action_settings"

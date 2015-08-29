@@ -101,19 +101,19 @@ public class ScheduleActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             // 特定の行(position)のデータを得る
             final ScheduleData d = (ScheduleData)getItem(position);
-            convertView = layoutInflater.inflate(com.pukulab.puku0x.gscalendar.R.layout.weekly_schedule_row, null);
+            convertView = layoutInflater.inflate(R.layout.weekly_schedule_row, null);
 
             // 日付ラベル
-            TextView tv_date = (TextView)convertView.findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_schedule_date);
-            tv_date.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_month_day_week), d.date));
+            TextView tv_date = (TextView)convertView.findViewById(R.id.tv_schedule_date);
+            tv_date.setText(DateFormat.format(getString(R.string.date_month_day_week), d.date));
 
             // スケジュールが登録されてある
             if (!d.scheduleList.isEmpty()) {
                 // スケジュールの内容を描画
                 for (final Schedule schedule : d.scheduleList) {
                     // タイトル
-                    View row_daily = View.inflate(ScheduleActivity.this, com.pukulab.puku0x.gscalendar.R.layout.daily_schedule_row, null);
-                    TextView title = (TextView) row_daily.findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_schedule_title);
+                    View row_daily = View.inflate(ScheduleActivity.this, R.layout.daily_schedule_row, null);
+                    TextView title = (TextView) row_daily.findViewById(R.id.tv_schedule_title);
                     title.setText(schedule.title);
                     row_daily.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -128,18 +128,18 @@ public class ScheduleActivity extends AppCompatActivity {
                     });
 
                     // 時間 (HH:mm)
-                    title = (TextView) row_daily.findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_schedule_time_start);
-                    title.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), schedule.start));
-                    title = (TextView) row_daily.findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_schedule_time_end);
-                    title.setText(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_hour_minute), schedule.end));
+                    title = (TextView) row_daily.findViewById(R.id.tv_schedule_time_start);
+                    title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.start));
+                    title = (TextView) row_daily.findViewById(R.id.tv_schedule_time_end);
+                    title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.end));
 
                     // スケジュール区分
-                    ImageView bar = (ImageView) row_daily.findViewById(com.pukulab.puku0x.gscalendar.R.id.imageView);
+                    ImageView bar = (ImageView) row_daily.findViewById(R.id.imageView);
                     bar.setBackgroundColor(GroupSessionApi.title_colors[schedule.color]);
 
                     // 同じスケジュールが登録されたユーザ
                     String summary = "";
-                    TextView tv_same_schedule_users = (TextView) row_daily.findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_schedule_same_users);
+                    TextView tv_same_schedule_users = (TextView) row_daily.findViewById(R.id.tv_schedule_same_users);
                     if (!schedule.sameScheduleUsers.isEmpty()) {
                         for (UserData user : schedule.sameScheduleUsers) {
                             if (!summary.isEmpty()) summary += ",  ";
@@ -158,14 +158,14 @@ public class ScheduleActivity extends AppCompatActivity {
                     }
 
                     // レイアウトに追加
-                    LinearLayout layout_daily = (LinearLayout) convertView.findViewById(com.pukulab.puku0x.gscalendar.R.id.ll_daily_schedule);
+                    LinearLayout layout_daily = (LinearLayout) convertView.findViewById(R.id.ll_daily_schedule);
                     layout_daily.addView(row_daily);
                 }
             }
             // 予定なし
             else {
-                TextView none = (TextView) convertView.findViewById(com.pukulab.puku0x.gscalendar.R.id.tv_schedule_none);
-                none.setText(com.pukulab.puku0x.gscalendar.R.string.no_schedule);
+                TextView none = (TextView) convertView.findViewById(R.id.tv_schedule_none);
+                none.setText(R.string.no_schedule);
                 if (mDisplayedUser.usid.equals(mLoginUser.usid)) {
                     none.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -193,7 +193,7 @@ public class ScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.pukulab.puku0x.gscalendar.R.layout.activity_schedule);
+        setContentView(R.layout.activity_schedule);
 
         // 終了用のタイマ
         mBackKeyTimer = new CountDownTimer(2000, 2000) {
@@ -239,15 +239,15 @@ public class ScheduleActivity extends AppCompatActivity {
 
             // タイトルを設定
             actionBar.setTitle(mDisplayedUser.name);
-            actionBar.setSubtitle(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day), mDisplayedDate));
+            actionBar.setSubtitle(DateFormat.format(getString(R.string.date_year_month_day), mDisplayedDate));
         }
 
         // リストビュー
         mScheduleDataList = new ArrayList<>();
         mScheduleDataAdapter = new ScheduleDataAdapter(ScheduleActivity.this, 0, mScheduleDataList);
-        mScheduleDataListView = (ListView)findViewById(com.pukulab.puku0x.gscalendar.R.id.lv_weekly_schedule);
+        mScheduleDataListView = (ListView)findViewById(R.id.lv_weekly_schedule);
         //mScheduleDataListView.addHeaderView(getLayoutInflater().inflate(R.layout.schdule_footer, null));
-        mScheduleDataListView.addFooterView(getLayoutInflater().inflate(com.pukulab.puku0x.gscalendar.R.layout.schdule_footer, null));
+        mScheduleDataListView.addFooterView(getLayoutInflater().inflate(R.layout.schdule_footer, null));
         mScheduleDataListView.setAdapter(mScheduleDataAdapter);
         //mScheduleDataListView.setSelection(1);
         mScheduleDataListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -264,7 +264,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 if (actionBar != null) {
                     if (mScheduleDataList.size() > 0) {
                         mDisplayedDate = mScheduleDataList.get(firstVisibleItem).date;
-                        actionBar.setSubtitle(DateFormat.format(getString(com.pukulab.puku0x.gscalendar.R.string.date_year_month_day), mDisplayedDate));
+                        actionBar.setSubtitle(DateFormat.format(getString(R.string.date_year_month_day), mDisplayedDate));
                     }
                 }
 
@@ -322,7 +322,7 @@ public class ScheduleActivity extends AppCompatActivity {
                                     }
                                 }
                                 else {
-                                    Toast.makeText(ScheduleActivity.this, getString(com.pukulab.puku0x.gscalendar.R.string.connection_error), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ScheduleActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -344,12 +344,12 @@ public class ScheduleActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(com.pukulab.puku0x.gscalendar.R.menu.menu_schedule, menu);
+        getMenuInflater().inflate(R.menu.menu_schedule, menu);
 
         // 他のユーザのスケジュールを閲覧する際は編集不可に
         if (!mDisplayedUser.usid.equals(mLoginUser.usid)) {
             // 追加ボタンを非表示に
-            MenuItem menuAdd = menu.findItem(com.pukulab.puku0x.gscalendar.R.id.menu_add);
+            MenuItem menuAdd = menu.findItem(R.id.menu_add);
             menuAdd.setVisible(false);
 
             // 画面更新
@@ -402,29 +402,29 @@ public class ScheduleActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         // 設定
-        if (id == com.pukulab.puku0x.gscalendar.R.id.action_settings) {
+        if (id == R.id.action_settings) {
             Intent intent = SettingsActivity.createIntent(ScheduleActivity.this);
             startActivity(intent);
             return true;
         }
         // 更新
-        else if (id == com.pukulab.puku0x.gscalendar.R.id.action_refresh) {
+        else if (id == R.id.action_refresh) {
             // 再描画
             mScheduleDataAdapter.clear();
             mScheduleDataAdapter.notifyDataSetChanged();
             return true;
         }
-        else if (id == com.pukulab.puku0x.gscalendar.R.id.action_today) {
+        else if (id == R.id.action_today) {
             mScheduleDataListView.setSelection(0);
         }
         // カレンダー表示切り替え
-        else if (id == com.pukulab.puku0x.gscalendar.R.id.action_calendar) {
+        else if (id == R.id.action_calendar) {
             Intent intent = CalendarActivity.createIntent(ScheduleActivity.this, mLoginUser, mDisplayedUser, mLastDisplayedDate);
             startActivity(intent);
             finish();
         }
         // ユーザ一覧
-        else if (id == com.pukulab.puku0x.gscalendar.R.id.action_users) {
+        else if (id == R.id.action_users) {
             // 自分のスケジュールを見ているときはユーザ一覧画面に移動
             if (mDisplayedUser.usid.equals(mLoginUser.usid)) {
                 Intent intent = UserListActivity.createIntent(ScheduleActivity.this, mLoginUser, mDisplayedUser, mLastDisplayedDate);
@@ -437,7 +437,7 @@ public class ScheduleActivity extends AppCompatActivity {
             return true;
         }
         // 追加
-        else if (id == com.pukulab.puku0x.gscalendar.R.id.menu_add) {
+        else if (id == R.id.menu_add) {
             // 新規追加用スケジュール
             Schedule newSchedule = new Schedule();
             Calendar cal = Calendar.getInstance();
@@ -475,7 +475,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     mBackKeyTimer.start();
 
                     // 終了する場合, もう一度タップするようにメッセージを出力する
-                    mToast = Toast.makeText(ScheduleActivity.this, getString(com.pukulab.puku0x.gscalendar.R.string.back_to_exit), Toast.LENGTH_SHORT);
+                    mToast = Toast.makeText(ScheduleActivity.this, getString(R.string.back_to_exit), Toast.LENGTH_SHORT);
                     mToast.show();
                     mBackKeyPressed = true;
                     return false;

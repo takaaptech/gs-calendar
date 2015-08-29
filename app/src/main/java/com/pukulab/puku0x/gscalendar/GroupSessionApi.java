@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -56,7 +57,8 @@ public class GroupSessionApi {
     private String user = null;
     private String password = null;
 
-    public static final String[] str_weeks = {"日", "月", "火", "水", "木", "金", "土"};
+
+    public static final int max_schedule_num = 1000;
     public static final String[] title_items = { "既定", "来客", "出張", "勤怠", "その他"};
     public static final int title_colors[] = { Color.rgb(52, 152, 219),
                                                      Color.rgb(231, 76, 60),
@@ -78,6 +80,47 @@ public class GroupSessionApi {
      * @return          開始日~終了日までのスケジュール
      */
     public List<ScheduleData> getSchedule(String usid, Date dayFrom, Date dayTo) {
+        Date tmpFrom = (Date)dayFrom;
+        List<ScheduleData> scheduleList = new ArrayList<ScheduleData>();
+
+        while (true) {
+            int count = 0;
+            List<ScheduleData> tmpList = getSchedule_(usid, tmpFrom, dayTo);
+
+            ScheduleData lastSchedule = null;
+            for (ScheduleData s : tmpList) {
+                if (s.scheduleList.size() > 0) {
+                    count += s.scheduleList.size();
+                    lastSchedule = s;
+                }
+            }
+
+            // 取得可能な数以上登録されている場合は追加読み込み
+            if (count < max_schedule_num)  {
+                scheduleList.addAll(tmpList);
+                break;
+            }
+            else {
+                for (ScheduleData s : tmpList) {
+                    if (s.date.before(lastSchedule.date)) {
+                        scheduleList.add(s);
+                    }
+                }
+                tmpFrom = (Date)lastSchedule.date;
+            }
+        }
+
+        return scheduleList;
+    }
+
+    /**
+     *
+     * @param usid      ユーザのID
+     * @param dayFrom   開始日
+     * @param dayTo     終了日
+     * @return          開始日~終了日までのスケジュール
+     */
+    private List<ScheduleData> getSchedule_(String usid, Date dayFrom, Date dayTo) {
         HttpURLConnection connection = null;
         List<ScheduleData> result = null;
 
@@ -86,7 +129,7 @@ public class GroupSessionApi {
             SimpleDateFormat f2 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
             // URLリクエスト
-            URL url = new URL(address + "api/schedule/search.do?" + "usid=" + usid + "&startFrom=" + f.format(dayFrom) + "&startTo=" + f.format(dayTo) + "&endFrom=" + f.format(dayFrom) + "&endTo=" + f.format(dayTo) + "&sameInputFlg=1" + "&results=100");
+            URL url = new URL(address + "api/schedule/search.do?" + "usid=" + usid + "&startFrom=" + f.format(dayFrom) + "&startTo=" + f.format(dayTo) + "&endFrom=" + f.format(dayFrom) + "&endTo=" + f.format(dayTo) + "&sameInputFlg=1" + "&results=" + max_schedule_num);
 
             // 接続 (Basic認証)
             connection = (HttpURLConnection) url.openConnection();
@@ -105,7 +148,7 @@ public class GroupSessionApi {
 
             // タグ名と値
             Schedule schedule = null;
-            int user_count = 0, facility_count = 0;
+            int total_count = 0, user_count = 0, facility_count = 0;
             UserData user = null;
             FacilityData facility = null;
             String tag = "", value = "";
@@ -115,6 +158,9 @@ public class GroupSessionApi {
                         tag = parser.getName();
                         switch (tag) {
                             case "ResultSet":
+                                // 全スケジュール数
+                                total_count = Integer.parseInt(parser.getAttributeValue(0));
+
                                 // スケジュールデータを作る
                                 result = new ArrayList<>();
 
@@ -132,7 +178,6 @@ public class GroupSessionApi {
                                     result.add(new ScheduleData(calendar.getTime(), scheduleList));
                                     calendar.add(Calendar.DATE, 1);
                                 } while (!calendar.getTime().equals(dayTo));
-
                                 break;
                             case "Result":
                                 schedule = new Schedule();
@@ -215,13 +260,11 @@ public class GroupSessionApi {
 
                             case "Result":
                                 // 一致した日付にスケジュールを追加
-                                for (int i = 0; i < result.size(); i++) {
-                                    Date d1 = f.parse(f.format(result.get(i).date));
-                                    Date d2 = f.parse(f.format(schedule.start));
-
+                                Date d1 = f.parse(f.format(schedule.start));
+                                for (ScheduleData s : result) {
+                                    Date d2 = f.parse(f.format(s.date));
                                     if (d1.equals(d2)) {
-                                        // データ追加
-                                        result.get(i).scheduleList.add(schedule);
+                                        s.scheduleList.add(schedule);
                                     }
                                 }
                                 break;
