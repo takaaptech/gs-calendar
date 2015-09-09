@@ -4,9 +4,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.pukulab.puku0x.gscalendar.UserListActivity"
+    tools:context=".UserListActivity"
     android:background="@android:color/background_light">
-
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
@@ -16,22 +15,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
-        <ScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <ListView
+            android:id="@+id/lv_users"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-
-            <LinearLayout
-                android:id="@+id/ll_users"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical" >
-            </LinearLayout>
-        </ScrollView>
+            android:listSelector="@drawable/listselector"
+            android:drawSelectorOnTop="true">
+        </ListView>
     </LinearLayout>
 
     <ProgressBar

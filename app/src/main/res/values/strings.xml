@@ -12,6 +12,7 @@
     <string name="date_hour_minute">kk:mm</string>
 
     <!--アクションバーのボタンとか-->
+    <string name="menu_refresh">更新</string>
     <string name="menu_add_schedule">予定を追加</string>
     <string name="menu_edit_schedule">予定を編集</string>
     <string name="menu_save_schedule">予定を保存</string>
@@ -38,6 +39,7 @@
     <string name="ask_update">予定が編集されています。上書き保存しますか？</string>
     <string name="ask_exit">終了しますか？</string>
     <string name="back_to_exit">"終了する場合は、もう一度バックボタンを押してください"</string>
+    <string name="refresh">"最新の情報に更新しています"</string>
 
     <!--エラーメッセージ-->
     <string name="login_error">ログインエラー: ID・パスワード・URLを確認してください</string>

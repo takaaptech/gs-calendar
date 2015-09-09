@@ -19,21 +19,24 @@ package com.pukulab.puku0x.gscalendar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -64,12 +67,48 @@ public class UserListActivity extends AppCompatActivity {
     // プログレスバー
     private ProgressBar mProgressBar;
 
+    // ユーザリスト
+    List<UserData> mUserList;
+    UserListAdapter mListAdapter;
+    private ListView mListView;
+
+    // インテント
     public static Intent createIntent(Context context, UserData loginUser, UserData displayedUser, Date displayedDate) {
         Intent intent = new Intent(context, UserListActivity.class);
         intent.putExtra(ARGS_LOGIN_USER, loginUser);
         intent.putExtra(ARGS_DISPLAYED_USER, displayedUser);
         intent.putExtra(ARGS_DISPLAYED_DATE, displayedDate);
         return intent;
+    }
+
+    // 表示用アダプタ
+    public class UserListAdapter extends ArrayAdapter<UserData> {
+        private LayoutInflater layoutInflater;
+
+        public UserListAdapter(Context context, int textViewResourceId, List<UserData> objects) {
+            super(context, textViewResourceId, objects);
+            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // 特定の行(position)のデータを得る
+            final UserData user = (UserData)getItem(position);
+            convertView = layoutInflater.inflate(R.layout.users_row, null);
+            TextView text = (TextView) convertView.findViewById(R.id.tv_users);
+            text.setText(user.name);
+            // ログイン中のユーザはクリック不可・灰色
+            if (user.usid.equals(mLoginUser.usid)) {
+                text.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            }
+            return convertView;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            final UserData user = (UserData)getItem(position);
+            return (!user.usid.equals(mLoginUser.usid));
+        }
     }
 
     // 表示用
@@ -141,46 +180,9 @@ public class UserListActivity extends AppCompatActivity {
                                 mProgressBar.setVisibility(View.GONE);
 
                                 if (result != null) {
-                                    // レイアウトをリセット
-                                    final LinearLayout layout = (LinearLayout) findViewById(R.id.ll_users);
-                                    layout.removeAllViews();
-
-                                    for (final UserData user : result) {
-                                        View row = View.inflate(UserListActivity.this, R.layout.users_row, null);
-                                        TextView text = (TextView) row.findViewById(R.id.tv_users);
-                                        text.setText(user.name);
-
-                                        // ログイン中のユーザはクリック不可・灰色
-                                        if (user.usid.equals(mLoginUser.usid)) {
-                                            text.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                                        } else {
-                                            text.setOnClickListener(new View.OnClickListener() {
-                                                public void onClick(View v) {
-                                                    // 今日の日付
-                                                    Calendar cal = Calendar.getInstance();
-                                                    final int year = cal.get(Calendar.YEAR);                 // 年
-                                                    final int monthOfYear = cal.get(Calendar.MONTH);         // 月
-                                                    final int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);  // 日
-                                                    cal.clear();
-                                                    cal.set(year, monthOfYear, dayOfMonth);
-                                                    // スケジュール一覧へ移動
-                                                    Intent intent = null;
-                                                    final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                                    String default_schedule_display_mode = sp.getString(SettingsActivity.PREFERENCE_DEFAULT_SCHEDULE_DISPLAY_MODE, "0");
-                                                    if (default_schedule_display_mode != null && default_schedule_display_mode.equals("0")) {
-                                                        intent = CalendarActivity.createIntent(UserListActivity.this, mLoginUser, user, cal.getTime());
-                                                    } else {
-                                                        intent = ScheduleActivity.createIntent(UserListActivity.this, mLoginUser, user, cal.getTime());
-                                                    }
-                                                    startActivity(intent);
-                                                    //finish();
-                                                }
-                                            });
-                                        }
-
-                                        // レイアウトに追加
-                                        layout.addView(row);
-                                    }
+                                    mUserList.clear();
+                                    mUserList.addAll(result);
+                                    mListAdapter.notifyDataSetChanged();
                                 }
                                 else {
                                     Toast.makeText(UserListActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
@@ -197,10 +199,6 @@ public class UserListActivity extends AppCompatActivity {
             }
             else {
                 Toast.makeText(UserListActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
-//                if (exception != null) {
-//                    Toast.makeText(UserListActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-//                    exception.printStackTrace();
-//                }
             }
         }
     }
@@ -235,6 +233,31 @@ public class UserListActivity extends AppCompatActivity {
         if (mDisplayedDate == null) {
             mDisplayedDate = (Date) extras.getSerializable(ARGS_DISPLAYED_DATE);
         }
+
+        // ユーザーリスト
+        mUserList = new ArrayList<>();
+        mListView = (ListView) findViewById(R.id.lv_users);
+        mListAdapter = new UserListAdapter(UserListActivity.this, 0, mUserList);
+        mListView.setAdapter(mListAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listView = (ListView) parent;
+                UserData user = (UserData) listView.getItemAtPosition(position);
+
+                // 今日の日付
+                Calendar cal = Calendar.getInstance();
+                final int year = cal.get(Calendar.YEAR);                 // 年
+                final int monthOfYear = cal.get(Calendar.MONTH);         // 月
+                final int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);  // 日
+                cal.clear();
+                cal.set(year, monthOfYear, dayOfMonth);
+
+                // スケジュール一覧へ移動
+                Intent intent = CalendarActivity.createIntent(UserListActivity.this, mLoginUser, user, cal.getTime());
+                startActivity(intent);
+            }
+        });
 
         // ユーザ 一覧表示
         new DisplayUserListTask(this).execute();

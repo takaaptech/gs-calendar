@@ -2,7 +2,7 @@
 GSカレンダーは、日本トータルシステム株式会社様より提供されている無料のグループウェア「GroupSession」と連携し、お手持ちのAndroid端末からスケジュールの閲覧や編集を可能にするアプリです。
 
 ## スクリーンショット
-<img src=https://github.com/puku0x/gs-calendar/blob/master/screenshots/device-2015-08-11-095945.png width=200px> <img src=https://github.com/puku0x/gs-calendar/blob/master/screenshots/device-2015-07-04-174617.png width=200px> <img src=https://github.com/puku0x/gs-calendar/blob/master/screenshots/device-2015-07-04-174647.png width=200px>
+<img src=https://github.com/puku0x/gs-calendar/blob/master/screenshots/device-2015-09-09-233654.png width=200px> <img src=https://github.com/puku0x/gs-calendar/blob/master/screenshots/device-2015-09-09-235926.png width=200px> <img src=https://github.com/puku0x/gs-calendar/blob/master/screenshots/device-2015-09-10-000117.png width=200px>
 
 ## 対応バージョン
 GroupSession 4

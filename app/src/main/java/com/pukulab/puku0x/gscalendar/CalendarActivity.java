@@ -32,6 +32,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,14 +80,10 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
 
     // リストビュー用
     private List<ScheduleData> mScheduleDataList;       // 1月分
-    private List<ScheduleData> mDailyScheduleDataList;
-    private ListView mScheduleDataListView;
-    private ScheduleDataAdapter mScheduleDataAdapter;
+    private List<Schedule> mDailyScheduleList;
+    private ListView mDailyScheduleListView;
+    private ScheduleDataAdapter mDailyScheduleaListAdapter;
     private GetSchedulesTask mScheduleDataTask;
-
-//    LinearLayout mScheduleLayout;
-//    List<ScheduleData> mScheduleDataList;
-//    private DisplaySchedulesTask mTask;
 
     // カレンダー
     private MultiCalendarView mCalendarView;
@@ -214,15 +212,8 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
             mProgressBar.setVisibility(View.GONE);
 
             if (data != null) {
-                // スケジュールリスト表示のクリア
-                final LinearLayout layout = (LinearLayout) findViewById(R.id.scheduleList);
-                layout.removeAllViews();
-                TextView tv_date = (TextView) findViewById(R.id.tv_schedule_date);
-                tv_date.setText("");
-
                 // データ更新
                 mScheduleDataList = data;
-                //mScheduleDataAdapter.notifyDataSetChanged();
 
                 // フリックで月移動するときにページャを
                 mCalendarView.getIndicator().setOnPageChangeListener(null);
@@ -234,11 +225,9 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
 
                     @Override
                     public void onPageSelected(int position) {
-                        // スケジュールリスト表示のクリア
-                        final LinearLayout layout = (LinearLayout) findViewById(R.id.scheduleList);
-                        layout.removeAllViews();
-                        TextView tv_date = (TextView) findViewById(R.id.tv_schedule_date);
-                        tv_date.setText("");
+                        // スケジュールリストのクリア
+                        mDailyScheduleList.clear();
+                        mDailyScheduleaListAdapter.notifyDataSetChanged();
 
                         // 1か月分読み込み
                         final Calendar cal = Calendar.getInstance();
@@ -322,10 +311,10 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
     }
 
     // 表示用アダプタ
-    public class ScheduleDataAdapter extends ArrayAdapter<ScheduleData> {
+    public class ScheduleDataAdapter extends ArrayAdapter<Schedule> {
         private LayoutInflater layoutInflater;
 
-        public ScheduleDataAdapter(Context context, int textViewResourceId, List<ScheduleData> objects) {
+        public ScheduleDataAdapter(Context context, int textViewResourceId, List<Schedule> objects) {
             super(context, textViewResourceId, objects);
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -333,82 +322,46 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             // 特定の行(position)のデータを得る
-            final ScheduleData d = (ScheduleData)getItem(position);
-            convertView = layoutInflater.inflate(R.layout.weekly_schedule_row, null);
+            final Schedule schedule = (Schedule)getItem(position);
+            convertView = layoutInflater.inflate(R.layout.daily_schedule_row, null);
 
-//            // 日付ラベル
-//            TextView tv_date = (TextView)convertView.findViewById(R.id.tv_schedule_date);
-//            tv_date.setText(DateFormat.format(getString(R.string.date_month_day_week), d.date));
+            // タイトル
+            TextView title = (TextView) convertView.findViewById(R.id.tv_schedule_title);
+            title.setText(schedule.title);
 
-            // スケジュールが登録されてある
-            if (!d.scheduleList.isEmpty()) {
-                // スケジュールの内容を描画
-                for (final Schedule schedule : d.scheduleList) {
-                    // タイトル
-                    View row_daily = View.inflate(CalendarActivity.this, R.layout.daily_schedule_row, null);
-                    TextView title = (TextView) row_daily.findViewById(R.id.tv_schedule_title);
-                    title.setText(schedule.title);
-                    row_daily.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            // クリック時の処理
-                            Intent intent = DetailActivity.createIntent(CalendarActivity.this, mLoginUser, mDisplayedUser, schedule);
-                            int requestCode = DetailActivity.REQUEST_DETAIL;
-                            startActivityForResult(intent, requestCode);
-                        }
-                    });
+            // 時間 (HH:mm)
+            title = (TextView) convertView.findViewById(R.id.tv_schedule_time_start);
+            title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.start));
+            title = (TextView) convertView.findViewById(R.id.tv_schedule_time_end);
+            title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.end));
 
-                    // 時間 (HH:mm)
-                    title = (TextView) row_daily.findViewById(R.id.tv_schedule_time_start);
-                    title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.start));
-                    title = (TextView) row_daily.findViewById(R.id.tv_schedule_time_end);
-                    title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.end));
+            // スケジュール区分
+            ImageView bar = (ImageView) convertView.findViewById(R.id.imageView);
+            bar.setBackgroundColor(GroupSessionApi.title_colors[schedule.color]);
 
-                    // スケジュール区分
-                    ImageView bar = (ImageView) row_daily.findViewById(R.id.imageView);
-                    bar.setBackgroundColor(GroupSessionApi.title_colors[schedule.color]);
-
-                    // 同じスケジュールが登録されたユーザ
-                    TextView tv_same_schedule_users = (TextView) row_daily.findViewById(R.id.tv_schedule_same_users);
-                    if (!schedule.sameScheduleUsers.isEmpty()) {
-                        String users = "";
-                        for (UserData user : schedule.sameScheduleUsers) {
-                            if (!users.isEmpty()) users += ",  ";
-                            users += user.name;
-                        }
-                        tv_same_schedule_users.setText(users);
-                    }
-
-                    // レイアウトに追加
-                    LinearLayout layout_daily = (LinearLayout) convertView.findViewById(R.id.ll_daily_schedule);
-                    layout_daily.addView(row_daily);
+            // 同じスケジュールが登録されたユーザ
+            String summary = "";
+            TextView tv_same_schedule_users = (TextView) convertView.findViewById(R.id.tv_schedule_same_users);
+            if (!schedule.sameScheduleUsers.isEmpty()) {
+                for (UserData user : schedule.sameScheduleUsers) {
+                    if (!summary.isEmpty()) summary += ",  ";
+                    summary += user.name;
                 }
+                tv_same_schedule_users.setText(summary);
             }
-//            // 予定なし
-//            else {
-//                TextView none = (TextView) convertView.findViewById(R.id.tv_schedule_none);
-//                none.setText(R.string.no_schedule);
-//                none.setOnClickListener(new View.OnClickListener() {
-//                    public void onClick(View v) {
-//                        // 予定なしのラベルクリックで予定追加
-//                        Schedule newSchedule = new Schedule();
-//                        Calendar cal = Calendar.getInstance();
-//                        cal.setTime(d.date);
-//                        cal.set(Calendar.HOUR_OF_DAY, Schedule.DEFAULT_START_HOUR);
-//                        cal.set(Calendar.MINUTE, Schedule.DEFAULT_START_MINUTE);
-//                        newSchedule.start = cal.getTime();
-//                        cal.set(Calendar.HOUR_OF_DAY, Schedule.DEFAULT_END_HOUR);
-//                        cal.set(Calendar.MINUTE, Schedule.DEFAULT_END_MINUTE);
-//                        newSchedule.end = cal.getTime();
-//                        Intent intent = EditActivity.createIntent(getApplicationContext(), newSchedule);
-//                        int requestCode = EditActivity.REQUEST_ADD_SCHEDULE;
-//                        startActivityForResult(intent, requestCode);
-//                    }
-//                });
-//            }
+
+            // 予約済みの施設
+            if (!schedule.reservedFacilities.isEmpty()) {
+                for (FacilityData facility : schedule.reservedFacilities) {
+                    if (!summary.isEmpty()) summary += ",  ";
+                    summary += facility.name;
+                }
+                tv_same_schedule_users.setText(summary);
+            }
+
             return convertView;
         }
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -466,8 +419,24 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
 
         // カレンダー下のリストビュー
         mScheduleDataList = new ArrayList<>();
-        mScheduleDataAdapter = new ScheduleDataAdapter(this, 0, mScheduleDataList);
-        //mScheduleDataListView = (ListView)findViewById(R.id.lv_schedule);
+        mDailyScheduleList = new ArrayList<>();
+        mDailyScheduleaListAdapter = new ScheduleDataAdapter(CalendarActivity.this, 0, mDailyScheduleList);
+        mDailyScheduleListView = (ListView)findViewById(R.id.lv_schedule);
+        mDailyScheduleListView.setAdapter(mDailyScheduleaListAdapter);
+        mDailyScheduleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView listView = (ListView) parent;
+                Schedule schedule = (Schedule) listView.getItemAtPosition(position);
+                // 過去のスケジュールを保存
+                mLastSchedule = new Schedule(schedule);
+
+                // 詳細画面に移動
+                Intent intent = DetailActivity.createIntent(CalendarActivity.this, mLoginUser, mDisplayedUser, schedule);
+                int requestCode = DetailActivity.REQUEST_DETAIL;
+                startActivityForResult(intent, requestCode);
+            }
+        });
 
         // Set the first valid day
         final Calendar firstValidDay = Calendar.getInstance();
@@ -523,14 +492,6 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
 
         // カレンダーの最初の表示位置を今月に合わせる
         mCalendarView.setViewPagerPosition(12);
-
-//        // 日付を更新してスケジュール取得
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.DAY_OF_MONTH, 1);
-//        mStartDate = cal.getTime();
-//        cal.add(Calendar.MONTH, 1);
-//        mEndDate = cal.getTime();
-//        new DisplaySchedulesTask(CalendarActivity.this, mDisplayedUser, mDisplayedDate).execute(mStartDate, mEndDate);
     }
 
     @Override
@@ -538,6 +499,7 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
         // Reset the previously selected TextView to his previous Typeface
         if (mSelectedTextView != null) {
             mSelectedTextView.setTypeface(mSelectedTypeface);
+            mSelectedTextView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
         }
 
         final TextView day = mCalendarView.getTextViewForDate(dayInMillis);
@@ -548,6 +510,7 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
 
             // Show the selected TextView as bold
             day.setTypeface(Typeface.DEFAULT_BOLD);
+            day.setBackgroundColor(getResources().getColor(R.color.theme_color_transparent));
         }
 
         // 日付を取得
@@ -568,96 +531,20 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
         }
 
         // スケジュールリストのレイアウトをリセット
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.scheduleList);
-        layout.removeAllViews();
+        mDailyScheduleList.clear();
 
-        if (mScheduleDataList != null) {
-            for (ScheduleData d : mScheduleDataList) {
-                if (d.date.equals(mDisplayedDate)) {
-                    // 日付ラベル
-                    TextView tv_date = (TextView) findViewById(R.id.tv_schedule_date);
-                    tv_date.setText(DateFormat.format(getString(R.string.date_month_day_week), d.date));
-
-                    // スケジュールが登録されてある
-                    if (!d.scheduleList.isEmpty()) {
-                        // スケジュールの内容を描画
-                        for (final Schedule schedule : d.scheduleList) {
-                            // タイトル
-                            View row_daily = View.inflate(CalendarActivity.this, R.layout.daily_schedule_row, null);
-                            TextView title = (TextView) row_daily.findViewById(R.id.tv_schedule_title);
-                            title.setText(schedule.title);
-                            row_daily.setOnClickListener(new View.OnClickListener() {
-                                public void onClick(View v) {
-                                    // 過去のスケジュールを保存
-                                    mLastSchedule = new Schedule(schedule);
-
-                                    // 詳細画面に移動
-                                    Intent intent = DetailActivity.createIntent(CalendarActivity.this, mLoginUser, mDisplayedUser, schedule);
-                                    int requestCode = DetailActivity.REQUEST_DETAIL;
-                                    startActivityForResult(intent, requestCode);
-                                }
-                            });
-
-                            // 時間 (HH:mm)
-                            title = (TextView) row_daily.findViewById(R.id.tv_schedule_time_start);
-                            title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.start));
-                            title = (TextView) row_daily.findViewById(R.id.tv_schedule_time_end);
-                            title.setText(DateFormat.format(getString(R.string.date_hour_minute), schedule.end));
-
-                            // スケジュール区分
-                            ImageView bar = (ImageView) row_daily.findViewById(R.id.imageView);
-                            bar.setBackgroundColor(GroupSessionApi.title_colors[schedule.color]);
-
-                            // 同じスケジュールが登録されたユーザ
-                            String summary = "";
-                            TextView tv_same_schedule_users = (TextView) row_daily.findViewById(R.id.tv_schedule_same_users);
-                            if (!schedule.sameScheduleUsers.isEmpty()) {
-                                for (UserData user : schedule.sameScheduleUsers) {
-                                    if (!summary.isEmpty()) summary += ",  ";
-                                    summary += user.name;
-                                }
-                                tv_same_schedule_users.setText(summary);
-                            }
-
-                            // 予約済みの施設
-                            if (!schedule.reservedFacilities.isEmpty()) {
-                                for (FacilityData facility : schedule.reservedFacilities) {
-                                    if (!summary.isEmpty()) summary += ",  ";
-                                    summary += facility.name;
-                                }
-                                tv_same_schedule_users.setText(summary);
-                            }
-
-                            // レイアウトに追加
-                            layout.addView(row_daily);
-                        }
-                    }
-                    //                // 予定なし
-                    //                else {
-                    //                    TextView none = (TextView) layout.findViewById(R.id.tv_schedule_none);
-                    //                    none.setText(R.string.no_schedule);
-                    //                    none.setOnClickListener(new View.OnClickListener() {
-                    //                        public void onClick(View v) {
-                    //                            // 予定なしのラベルクリックで予定追加
-                    //                            Schedule newSchedule = new Schedule();
-                    //                            Calendar cal = Calendar.getInstance();
-                    //                            cal.setTime(d.date);
-                    //                            cal.set(Calendar.HOUR_OF_DAY, Schedule.DEFAULT_START_HOUR);
-                    //                            cal.set(Calendar.MINUTE, Schedule.DEFAULT_START_MINUTE);
-                    //                            newSchedule.start = cal.getTime();
-                    //                            cal.set(Calendar.HOUR_OF_DAY, Schedule.DEFAULT_END_HOUR);
-                    //                            cal.set(Calendar.MINUTE, Schedule.DEFAULT_END_MINUTE);
-                    //                            newSchedule.end = cal.getTime();
-                    //                            Intent intent = EditActivity.createIntent(getApplicationContext(), newSchedule);
-                    //                            int requestCode = EditActivity.REQUEST_ADD_SCHEDULE;
-                    //                            startActivityForResult(intent, requestCode);
-                    //                        }
-                    //                    });
-                    //                }
-
+        for (ScheduleData d : mScheduleDataList) {
+            if (d.date.equals(mDisplayedDate)) {
+                // 日付ラベル
+                //TextView tv_date = (TextView) findViewById(R.id.tv_schedule_date);
+                //tv_date.setText(DateFormat.format(getString(R.string.date_month_day_week), d.date));
+                // スケジュールが登録されてある
+                if (!d.scheduleList.isEmpty()) {
+                    mDailyScheduleList.addAll(d.scheduleList);
                 }
             }
         }
+        mDailyScheduleaListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -742,19 +629,6 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
             calendar.set(Calendar.MILLISECOND, 0);
             onDayClick(calendar.getTimeInMillis());
         }
-        // 更新
-        else if (id == R.id.action_refresh) {
-            // 再描画
-            //mScheduleDataAdapter.clear();
-            //mScheduleDataAdapter.notifyDataSetChanged();
-            new DisplaySchedulesTask(CalendarActivity.this, mDisplayedUser, mDisplayedDate).execute(mStartDate, mEndDate);
-            return true;
-        }
-//        else if (id == R.id.action_list) {
-//            Intent intent = ScheduleActivity.createIntent(getApplicationContext(), mLoginUser, mDisplayedUser, mLastDisplayedDate);
-//            startActivity(intent);
-//            finish();
-//        }
         // ユーザ一覧
         else if (id == R.id.action_users) {
             // 自分のスケジュールを見ているときはユーザ一覧画面に移動
@@ -766,6 +640,13 @@ public class CalendarActivity extends AppCompatActivity implements OnDayClickLis
             else {
                 finish();
             }
+            return true;
+        }
+        // 更新
+        else if (id == R.id.menu_refresh) {
+            // 再描画
+            new DisplaySchedulesTask(CalendarActivity.this, mDisplayedUser, mDisplayedDate).execute(mStartDate, mEndDate);
+            Toast.makeText(CalendarActivity.this, getString(R.string.refresh), Toast.LENGTH_SHORT).show();
             return true;
         }
         // 追加
